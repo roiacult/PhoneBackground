@@ -1,8 +1,11 @@
 package com.example.djawed.phonebackground;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,7 +16,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+@SuppressWarnings("ALL")
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+
+
+    BottomNavigationView navigation;
+
+
+
 
     @Override
     protected void onCreate ( Bundle savedInstanceState ) {
@@ -22,6 +33,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById ( R.id.toolbar );
         setSupportActionBar ( toolbar );
 
+
+        navigation = (BottomNavigationView) findViewById ( R.id.navigation );
+        navigation.setOnNavigationItemSelectedListener ( mOnNavigationItemSelectedListener );
+
+        navigation.setSelectedItemId ( R.id.bottom_navigation_compass );
 
         DrawerLayout drawer = (DrawerLayout) findViewById ( R.id.drawer_layout );
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle ( this , drawer , toolbar , R.string.navigation_drawer_open , R.string.navigation_drawer_close );
@@ -88,4 +104,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer ( GravityCompat.START );
         return true;
     }
+
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener ( ) {
+
+        @Override
+        public boolean onNavigationItemSelected ( @NonNull MenuItem item ) {
+            ActionBar bare=getSupportActionBar ();
+            switch (item.getItemId ( )) {
+                case R.id.bottom_navigation_flux:
+
+                    bare.setTitle ( "Flux" );
+                    return true;
+                case R.id.bottom_navigation_compass:
+
+                    return true;
+                case R.id.bottom_navigation_transferer:
+
+                    return true;
+                case R.id.bottom_navigation_activites :
+
+                    return true;
+                case R.id.bottom_navigation_profile :
+
+                    return true;
+            }
+            return false;
+        }
+    };
 }
