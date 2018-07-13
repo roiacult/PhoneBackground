@@ -4,7 +4,7 @@ import android.arch.lifecycle.ViewModel;
 import android.support.v7.widget.Toolbar;
 
 import com.example.djawed.phonebackground.Fragments.FragmentActivites;
-import com.example.djawed.phonebackground.Fragments.FragmentDecouvrir;
+import com.example.djawed.phonebackground.Fragments.DecouvrirFragment.FragmentDecouvrir;
 import com.example.djawed.phonebackground.Fragments.FragmentFlux;
 import com.example.djawed.phonebackground.Fragments.FragmentProfile;
 import com.example.djawed.phonebackground.Fragments.FragmentTransferer;
