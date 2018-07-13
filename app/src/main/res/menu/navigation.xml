@@ -7,7 +7,7 @@
         android:title="@string/title_flux" />
 
     <item
-        android:id="@+id/bottom_navigation_compass"
+        android:id="@+id/bottom_navigation_decouvrir"
         android:icon="@drawable/compass"
         android:title="@string/title_decouvrir" />
 

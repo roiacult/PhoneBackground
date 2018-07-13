@@ -1,27 +1,36 @@
 package com.example.djawed.phonebackground;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.example.djawed.phonebackground.Fragments.FragmentDecouvrir;
+import com.example.djawed.phonebackground.Fragments.FragmentFlux;
+import com.example.djawed.phonebackground.Fragments.FragmentTransferer;
 
 @SuppressWarnings("ALL")
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
 
-    BottomNavigationView navigation;
+    private BottomNavigationView navigation;
+    private DrawerLayout drawer;
+    private ActionBarDrawerToggle toggle;
+
+    private FragmentsViewModele viewModele;
+    private FragmentManager manager;
 
 
 
@@ -30,22 +39,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate ( Bundle savedInstanceState ) {
         super.onCreate ( savedInstanceState );
         setContentView ( R.layout.activity_main );
-        Toolbar toolbar = (Toolbar) findViewById ( R.id.toolbar );
-        setSupportActionBar ( toolbar );
+        //Toolbar toolbar = (Toolbar) findViewById ( R.id.toolbar );
+        //setSupportActionBar ( toolbar );
 
+        viewModele = ViewModelProviders.of ( this ).get ( FragmentsViewModele.class );
+        manager = getSupportFragmentManager ();
+        drawer = (DrawerLayout) findViewById ( R.id.drawer_layout );
 
         navigation = (BottomNavigationView) findViewById ( R.id.navigation );
         navigation.setOnNavigationItemSelectedListener ( mOnNavigationItemSelectedListener );
 
-        navigation.setSelectedItemId ( R.id.bottom_navigation_compass );
+        navigation.setSelectedItemId ( R.id.bottom_navigation_decouvrir );
 
-        DrawerLayout drawer = (DrawerLayout) findViewById ( R.id.drawer_layout );
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle ( this , drawer , toolbar , R.string.navigation_drawer_open , R.string.navigation_drawer_close );
-        drawer.addDrawerListener ( toggle );
-        toggle.syncState ( );
+
 
         NavigationView navigationView = (NavigationView) findViewById ( R.id.nav_view );
         navigationView.setNavigationItemSelectedListener ( this );
+
+
     }
 
     @Override
@@ -110,23 +121,53 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         @Override
         public boolean onNavigationItemSelected ( @NonNull MenuItem item ) {
-            ActionBar bare=getSupportActionBar ();
+
             switch (item.getItemId ( )) {
                 case R.id.bottom_navigation_flux:
 
-                    bare.setTitle ( "Flux" );
+                    FragmentFlux flux = viewModele.getFlux ();
+                    manager.beginTransaction ().replace ( R.id.container ,flux).commit ();
+                    toggle = new ActionBarDrawerToggle ( MainActivity.this,drawer,flux.getToolbar (),R.string.navigation_drawer_open , R.string.navigation_drawer_close );
+                    drawer.addDrawerListener ( toggle );
+                    toggle.syncState ();
                     return true;
-                case R.id.bottom_navigation_compass:
+
+
+                case R.id.bottom_navigation_decouvrir:
+
+                    FragmentDecouvrir decouvrir = viewModele.getDecouvrir ();
+
+                        manager.beginTransaction ( ).replace ( R.id.container , decouvrir ).commit ( );
+
+                        if(decouvrir.getToolbar () == null) Log.v("DADADA","toolbare is null");
+                        else Log.v("DADADA","toolbare is not null");
+                        toggle = new ActionBarDrawerToggle ( MainActivity.this , drawer , decouvrir.getToolbar ( ) , R.string.navigation_drawer_open , R.string.navigation_drawer_close );
+                        drawer.addDrawerListener ( toggle );
+                        toggle.syncState ( );
 
                     return true;
+
+
                 case R.id.bottom_navigation_transferer:
 
+                    FragmentTransferer transferer=viewModele.getTransferer ();
+                    manager.beginTransaction ().replace ( R.id.container,transferer ).commit ();
+
+                    toggle = new ActionBarDrawerToggle ( MainActivity.this , drawer , transferer.getToolbar () , R.string.navigation_drawer_open , R.string.navigation_drawer_close );
+                    drawer.addDrawerListener ( toggle );
+                    toggle.syncState ();
                     return true;
+
+
                 case R.id.bottom_navigation_activites :
 
+                    manager.beginTransaction ().replace ( R.id.container,viewModele.getActivites () ).commit ();
                     return true;
+
+
                 case R.id.bottom_navigation_profile :
 
+                    manager.beginTransaction ().replace ( R.id.container,viewModele.getProfile () ).commit ();
                     return true;
             }
             return false;
