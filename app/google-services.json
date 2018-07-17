@@ -1,0 +1,86 @@
+{
+  "project_info": {
+    "project_number": "793856047150",
+    "firebase_url": "https://phonebackground-825a5.firebaseio.com",
+    "project_id": "phonebackground-825a5",
+    "storage_bucket": "phonebackground-825a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:793856047150:android:dee2ad2f27a55590",
+        "android_client_info": {
+          "package_name": "com.example.djawed.phonebackground"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "793856047150-79dhe2b5mdf49qhh8ar9j4d0q8un1r5k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.djawed.phonebackground",
+            "certificate_hash": "c60b048ee431135f3b404a7abe3ced0429d71b5b"
+          }
+        },
+        {
+          "client_id": "793856047150-3u9uvgshbb2b5oo9j8huqif3cfebt8r6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdteBiWXJ5V6u0fuzZik4gNPcWV4WGD3A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "793856047150-2hf7da338rhb3dgeob2djbdvnod27ck5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:793856047150:android:167243eaba79c495",
+        "android_client_info": {
+          "package_name": "com.exemple.djawed.phonebackground"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "793856047150-3u9uvgshbb2b5oo9j8huqif3cfebt8r6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdteBiWXJ5V6u0fuzZik4gNPcWV4WGD3A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

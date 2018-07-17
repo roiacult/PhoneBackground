@@ -1,13 +1,16 @@
 package com.example.djawed.phonebackground.Fragments.DecouvrirFragment;
 
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.djawed.phonebackground.MainActivity;
 import com.example.djawed.phonebackground.R;
 
 public class FragmentDecouvrir extends Fragment {
@@ -24,15 +28,31 @@ public class FragmentDecouvrir extends Fragment {
     private ViewPager pager;
     private ViewPagerAdapter pagerAdapter;
     private TabLayout tabLayout;
+    private DrawerLayout drawer;
+    private AlertDialog dialog;
 
     private DecouvrirViewModele viewModele;
+
+    private MainActivity listner;
 
 
     public FragmentDecouvrir ( ) {
         // Required empty public constructor
     }
 
+    @Override
+    public void onAttach ( Context context ) {
+        super.onAttach ( context );
+        if(context instanceof MainActivity){
+            listner = (MainActivity) context;
+        }
+    }
 
+    @Override
+    public void onDetach ( ) {
+        listner =null;
+        super.onDetach ( );
+    }
 
     @Override
     public View onCreateView ( LayoutInflater inflater , ViewGroup container , Bundle savedInstanceState ) {
@@ -40,6 +60,9 @@ public class FragmentDecouvrir extends Fragment {
 
         viewModele = ViewModelProviders.of ( this ).get ( DecouvrirViewModele.class );
         toolbar = (Toolbar)v.findViewById ( R.id.decouvrir_toolbare );
+        listner.setSupportActionBar ( toolbar );
+        setHasOptionsMenu ( true );
+
         pagerAdapter = new ViewPagerAdapter ( getFragmentManager () );
         pager = (ViewPager) v.findViewById ( R.id.decouvrir_container );
         pager.setAdapter ( pagerAdapter);
@@ -48,28 +71,30 @@ public class FragmentDecouvrir extends Fragment {
         tabLayout.addOnTabSelectedListener ( new TabLayout.ViewPagerOnTabSelectedListener ( pager ) );
         pager.addOnPageChangeListener ( new TabLayout.TabLayoutOnPageChangeListener ( tabLayout ) );
 
-
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle ( getActivity () , drawer , toolbar, R.string.navigation_drawer_open , R.string.navigation_drawer_close );
+        drawer.addDrawerListener ( toggle );
+        toggle.syncState ( );
 
         return v;
     }
-
-    public Toolbar getToolbar(){return toolbar;}
 
 
     @Override
     public void onCreateOptionsMenu ( Menu menu , MenuInflater inflater ) {
         super.onCreateOptionsMenu ( menu , inflater );
-        inflater.inflate ( R.menu.decouvrir_main,menu );
+        inflater.inflate ( R.menu.decouvrir_toolbare_menu,menu );
     }
 
     @Override
     public boolean onOptionsItemSelected ( MenuItem item ) {
 
         switch (item.getItemId ()){
-
+            case R.id.decouvrir_menu_addfreind :
+                dialog.show ();
+                return true;
         }
 
-        return super.onOptionsItemSelected ( item );
+        return false;
     }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter{
@@ -95,5 +120,13 @@ public class FragmentDecouvrir extends Fragment {
         public int getCount ( ) {
             return 3;
         }
+    }
+
+    public void setDrawer ( DrawerLayout drawer ) {
+        this.drawer = drawer;
+    }
+
+    public void setDialog ( AlertDialog dialog ) {
+        this.dialog = dialog;
     }
 }
