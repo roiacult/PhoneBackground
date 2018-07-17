@@ -17,15 +17,9 @@ public class FragmentsViewModele extends ViewModel {
     private FragmentActivites activites;
     private FragmentProfile profile;
 
-    private Toolbar toolbar;
-
     public FragmentDecouvrir getDecouvrir ( ) {
         if(decouvrir == null ) decouvrir = new FragmentDecouvrir ();
         return decouvrir;
-    }
-    public Toolbar getDecouvrirToolbare (){
-        if(decouvrir == null ) decouvrir = new FragmentDecouvrir ();
-        return decouvrir.getToolbar ();
     }
 
     public FragmentFlux getFlux ( ) {
@@ -33,21 +27,10 @@ public class FragmentsViewModele extends ViewModel {
         return flux;
     }
 
-    public Toolbar getFluxToolbare ( ) {
-        if(flux == null ) flux = new FragmentFlux ();
-        return flux.getToolbar ();
-    }
-
     public FragmentTransferer getTransferer ( ) {
         if(transferer == null ) transferer = new FragmentTransferer ();
         return transferer;
     }
-
-    public Toolbar getTransfererToolbare ( ) {
-        if(transferer == null ) transferer = new FragmentTransferer ();
-        return transferer.getToolbar ();
-    }
-
 
     public FragmentActivites getActivites ( ) {
         if(activites == null ) activites = new FragmentActivites ();

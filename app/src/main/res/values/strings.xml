@@ -13,6 +13,8 @@
     <string name="title_activites">Activités</string>
     <string name="title_account">Account</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="se_connecter">Se connecter</string>
+    <string name="fermer">Fermer</string>
+    <!--<string name="default_web_client_id">793856047150-3u9uvgshbb2b5oo9j8huqif3cfebt8r6.apps.googleusercontent.com</string>-->
 </resources>
