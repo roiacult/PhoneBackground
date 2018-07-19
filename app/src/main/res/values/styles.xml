@@ -14,8 +14,13 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-  //The Splash Screen Theme
+    //The Splash Screen Theme
+
     <style name="AppTheme.Launcher" parent="Theme.AppCompat.NoActionBar">
-      <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
+
+    <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

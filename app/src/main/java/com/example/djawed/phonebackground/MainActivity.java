@@ -33,6 +33,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -40,13 +41,24 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 @SuppressWarnings("ALL")
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final int RC_SIGN_IN = 111;
+    public static final String ACOUNT_INFO_ID="AccountID";
+    public static final String ACOUNT_INFO_NAME="AcountName";
+    public static final String ACOUNT_INFO_EMAIL="AcountEmail";
+    public static final String ACOUNT_INFO_PROFILE_IMGURI="profileImfUri";
+
+    public static final int RC_SIGN_IN = 111;
 
     //Firebase instance
+    private DatabaseReference referenceUsers;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private FirebaseAuth.AuthStateListener mAuthListner  =new FirebaseAuth.AuthStateListener ( ) {
@@ -98,8 +110,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate ( savedInstanceState );
         setContentView ( R.layout.activity_main );
 
-
-
         //For signe in with google
         configureApi ();
         ///////////////////
@@ -121,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dialogBuilder.setView ( v );
         dialogBuilder.setNegativeButton ( R.string.fermer,null );
         dialog = dialogBuilder.create ();
-
+        referenceUsers = FirebaseDatabase.getInstance ().getReference ().child ( "users" );
 
         mGoogleBtn.setOnClickListener ( new View.OnClickListener ( ) {
             @Override
@@ -137,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onSuccess ( LoginResult loginResult ) {
                 handleFacebookAccessToken(loginResult.getAccessToken());
+
             }
 
             @Override
@@ -152,12 +163,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         progress.setVisibility ( View.GONE );
 
-
-
-
         NavigationView navigationView = (NavigationView) findViewById ( R.id.nav_view );
         navigationView.setNavigationItemSelectedListener ( this );
-
 
     }
 
@@ -174,14 +181,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-
                             mUser = mAuth.getCurrentUser();
+                            saveAcountInfoToDatabase ( mUser.getUid (),mUser.getDisplayName (),mUser.getEmail (),mUser.getPhotoUrl ().toString () );
+                            dialog.dismiss ();
 
                         } else {
 
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -202,11 +208,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent ( data );
 
             if(result.isSuccess ()){
-                GoogleSignInAccount account = result.getSignInAccount ();
-                saveAcountInfoToDatabase(account);
+                final GoogleSignInAccount account = result.getSignInAccount ();
                 AuthCredential credential = GoogleAuthProvider.getCredential ( account.getIdToken (),null );
-                mAuth.signInWithCredential ( credential );
-                dialog.dismiss ();
+                mAuth.signInWithCredential ( credential ).addOnSuccessListener ( new OnSuccessListener <AuthResult> ( ) {
+                    @Override
+                    public void onSuccess ( AuthResult authResult ) {
+                        saveAcountInfoToDatabase(mUser.getUid (),account.getDisplayName (),account.getEmail (),account.getPhotoUrl ().toString ());
+                        dialog.dismiss ();
+                    }
+                } );
+
             }else {
                 Toast.makeText ( this,"Signe In Failled",Toast.LENGTH_SHORT ).show ();
             }
@@ -214,8 +225,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void saveAcountInfoToDatabase ( GoogleSignInAccount account ) {
-        //TODO save info to database
+    private void saveAcountInfoToDatabase ( final String id , final String name, final String email, final String imgUrl) {
+
+        referenceUsers.child ( mUser.getUid ( ) );
+        referenceUsers.addListenerForSingleValueEvent ( new ValueEventListener ( ) {
+            @Override
+            public void onDataChange ( @NonNull DataSnapshot dataSnapshot ) {
+                if ( !dataSnapshot.exists ( ) ) {
+                    //the user first time signe In
+
+                    Intent gotoSetAcountInfoActivity = new Intent ( MainActivity.this , setAccountInfo.class );
+                    gotoSetAcountInfoActivity.putExtra ( ACOUNT_INFO_ID,id );
+                    gotoSetAcountInfoActivity.putExtra ( ACOUNT_INFO_NAME , name );
+                    gotoSetAcountInfoActivity.putExtra ( ACOUNT_INFO_EMAIL,email );
+                    gotoSetAcountInfoActivity.putExtra ( ACOUNT_INFO_PROFILE_IMGURI,imgUrl );
+                    startActivity ( gotoSetAcountInfoActivity );
+
+                }//else the user allredy signe in we don't have to do anythink
+            }
+
+            @Override
+            public void onCancelled ( @NonNull DatabaseError databaseError ) {
+
+            }
+        } );
     }
 
     //we must call this methode in order to signe in with google

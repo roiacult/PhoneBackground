@@ -76,8 +76,6 @@ public class FragmentDecouvrir extends Fragment {
             drawer.addDrawerListener ( toggle );
             toggle.syncState ( );
         }
-
-
         return v;
     }
 
