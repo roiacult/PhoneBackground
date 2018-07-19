@@ -60,7 +60,7 @@ public class FragmentDecouvrir extends Fragment {
 
         viewModele = ViewModelProviders.of ( this ).get ( DecouvrirViewModele.class );
         toolbar = (Toolbar)v.findViewById ( R.id.decouvrir_toolbare );
-        listner.setSupportActionBar ( toolbar );
+        if (listner!= null) listner.setSupportActionBar ( toolbar );
         setHasOptionsMenu ( true );
 
         pagerAdapter = new ViewPagerAdapter ( getFragmentManager () );
@@ -72,8 +72,11 @@ public class FragmentDecouvrir extends Fragment {
         pager.addOnPageChangeListener ( new TabLayout.TabLayoutOnPageChangeListener ( tabLayout ) );
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle ( getActivity () , drawer , toolbar, R.string.navigation_drawer_open , R.string.navigation_drawer_close );
-        drawer.addDrawerListener ( toggle );
-        toggle.syncState ( );
+        if(drawer != null) {
+            drawer.addDrawerListener ( toggle );
+            toggle.syncState ( );
+        }
+
 
         return v;
     }

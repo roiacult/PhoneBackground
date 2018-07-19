@@ -16,5 +16,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="se_connecter">Se connecter</string>
     <string name="fermer">Fermer</string>
-    <!--<string name="default_web_client_id">793856047150-3u9uvgshbb2b5oo9j8huqif3cfebt8r6.apps.googleusercontent.com</string>-->
+    <string name="facebook_app_id">278492706254433</string>
+    <string name="fb_login_protocol_scheme">fb278492706254433</string>
 </resources>
